@@ -31,7 +31,7 @@ class DataPlayer(BasePlayer):
             with open("data.pickle", "rb") as f:
                 self.data = pickle.load(f)
         except (IOError, TypeError) as e:
-            logger.error(str(e))
+            logger.info(str(e))
             self.data = None
 
 
@@ -102,8 +102,10 @@ class MinimaxPlayer(BasePlayer):
         """
         # randomly select a move as player 1 or 2 on an empty board, otherwise
         # return the optimal minimax move at a fixed search depth of 3 plies
-        if state.ply_count < 2: self.queue.put(random.choice(state.actions()))
-        self.queue.put(self.minimax(state, depth=3))
+        if state.ply_count < 2:
+            self.queue.put(random.choice(state.actions()))
+        else:
+            self.queue.put(self.minimax(state, depth=3))
 
     def minimax(self, state, depth):
 
